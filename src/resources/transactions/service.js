@@ -1,14 +1,14 @@
-const metaQuery = require('../../config')
+const metaQuery = require('@/config')
 
 module.exports = {
 	async list ({ body }) {
 		try {
 			let list = await metaQuery.list({
-        table_name: 'test',
+        table_name: 'transactions',
         body
       })
 
-      if (body.aggregate) {
+      if (body.aggregate && list) {
         list = await metaQuery.aggregateTable({
           list,
           tables: body.aggregate,
@@ -16,16 +16,16 @@ module.exports = {
         })
       }
 
-      if (body.is_count) {
+			if (body.is_count) {
         const { count } = await metaQuery.count({
-          table_name: 'test',
+          table_name: 'transactions',
           body
         })
 
         return { list, count }
       }
 
-			return { list }
+			return list
 		} catch (error) {
 			throw error
 		}
@@ -34,7 +34,7 @@ module.exports = {
 	async store ({ body, trx }) {
 		try {
 			const response = await metaQuery.insert({
-        table_name: 'test',
+        table_name: 'transactions',
         body,
         trx
       })
@@ -48,13 +48,11 @@ module.exports = {
   async modify ({ body, trx }) {
     try {
       const options = [
-        'id',
-        'name',
-        'status'
+        'id'
       ]
 
 			const response = await metaQuery.update({
-        table_name: 'test',
+        table_name: 'transactions',
         body,
         options,
         trx
@@ -69,7 +67,7 @@ module.exports = {
   async delete ({ body, trx }) {
     try {
       const response = await metaQuery.delete({
-        table_name: 'test',
+        table_name: 'transactions',
         body,
         trx
       })

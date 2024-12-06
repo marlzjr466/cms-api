@@ -1,7 +1,17 @@
-const bootStrap = require('./src/bootstrap')
-const { APP } = require('./src/constants')
+require('module-alias/register')
 
-bootStrap.start(
-  APP.PORT,
-  () => console.log(`Server is running in PORT ${APP.PORT}`)
-)
+const bootstrap = require('@/bootstrap')
+const socket = require('@/config/socket')
+const { APP } = require('@/constants')
+
+const apps = [
+  { name: 'Server', config: bootstrap, port: APP.PORT },
+  { name: 'Socket', config: socket, port: APP.SOCKET_PORT }
+]
+
+apps.forEach(app => {
+  app.config
+    .start(app.port, () => {
+      console.log(`${app.name} running at http://localhost:${app.port}`)
+    })
+})

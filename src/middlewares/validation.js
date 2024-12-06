@@ -1,16 +1,26 @@
-const { APP } = require('../constants')
+const jwt = require('@/utilities/jwt')
 
 module.exports = async (req, res, next) => {
   try {
-    const headers = req.headers
+    const authHeader = req.headers['authorization']
 
-    if (!headers['secret-key']) {
-      throw new Error('Unathorized access, header `secret-key` not found.')
+    if (!authHeader) {
+      throw new Error('Unauthorized access. No Authorization header provided.')
     }
 
-    if (headers['secret-key'] !== APP.SECRET_KEY) {
-      throw new Error('Unathorized access, invalid secret key.')
+    if (!authHeader.startsWith('Bearer ')) {
+      throw new Error('Unauthorized access. Malformed Authorization header.')
     }
+
+    // Extract the token part
+    const token = authHeader.split(' ')[1];
+
+    if (!token) {
+      throw new Error('Unauthorized access. Token missing.')
+    }
+
+    // Attach user info to the request object
+    req.user = jwt.decodeAccessToken(token)
 
     next()
   } catch (error) {

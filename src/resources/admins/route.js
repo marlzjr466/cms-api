@@ -4,7 +4,12 @@ const router = express.Router()
 // controller
 const controller = require('./controller')
 
+// middleware
+const validation = require('@/middlewares/validation')
+
 router
+  .use(validation)
+  
   .get(
     '/',
     controller.list

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const { TOKEN } = require('../constants')
+const { TOKEN } = require('@/constants')
 
 module.exports = {
     generateAccessToken: function(user) {
@@ -9,5 +9,9 @@ module.exports = {
         // return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
         // const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
         // res.json({ accessToken: accessToken, refreshToken: refreshToken })
+    },
+
+    decodeAccessToken: function(token) {
+        return jwt.verify(token, TOKEN.ACCESS)
     }
 }
