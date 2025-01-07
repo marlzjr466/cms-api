@@ -8,7 +8,7 @@ module.exports = {
       const schema = Joi.object({})
 
       const data = await schema.validateAsync(req.body)
-      const response = await service.list({ body: data })
+      const response = await service.list(data)
 
       res.status(200)
         .send(response)
@@ -66,6 +66,74 @@ module.exports = {
     } catch (error) {
       console.log('delete: ', error)
       
+      res.status(400)
+        .send(error.message)
+    }
+  },
+
+  login: async (req, res) => {
+    try {
+      const schema = Joi.object({
+        username: Joi.string()
+          .required(),
+        password: Joi.string()
+          .required(),
+        role: Joi.string()
+          .valid('doctor', 'admin', 'attendant')
+          .required()
+      })
+
+      const data = await schema.validateAsync(req.body)
+      const response = await service.login({ body: data })
+
+      res.status(200)
+        .send(response)
+    } catch (error) {
+      res.status(400)
+        .send(error.message)
+    }
+  },
+
+  logout: async (req, res) => {
+    try {
+      const schema = Joi.object({
+        user_id: Joi.number()
+          .required()
+      })
+
+      const data = await schema.validateAsync(req.body)
+      const response = await service.logout(data.user_id)
+
+      res.status(200)
+        .send(response)
+    } catch (error) {
+      res.status(400)
+        .send(error.message)
+    }
+  },
+
+  createAdmin: async (req, res) => {
+    try {
+      const schema = Joi.object({
+        first_name: Joi.string()
+          .required(),
+        last_name: Joi.string()
+          .required(),
+        username: Joi.string()
+          .required(),
+        role: Joi.string()
+          .valid('admin')
+          .required(),
+        password: Joi.string()
+          .required()
+      })
+
+      const data = await schema.validateAsync(req.body)
+      const response = await service.createAdmin({ body: data })
+
+      res.status(200)
+        .send(response)
+    } catch (error) {
       res.status(400)
         .send(error.message)
     }

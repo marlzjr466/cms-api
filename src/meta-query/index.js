@@ -95,8 +95,7 @@ module.exports = class MetaQuery {
 					.ignore()
 			}
 
-			await query
-			return 'OK'
+			return await query
 		} catch (error) {
 			throw error
 		}

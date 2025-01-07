@@ -8,26 +8,44 @@ const controller = require('./controller')
 const validation = require('@/middlewares/validation')
 
 router
-  .use(validation)
-  
   .get(
     '/',
+    validation,
     controller.list
   )
   
   .post(
     '/',
+    validation,
     controller.store
   )
 
   .patch(
     '/',
+    validation,
     controller.patch
   )
 
   .delete(
     '/',
+    validation,
     controller.delete
+  )
+
+  .post(
+    '/login',
+    controller.login
+  )
+
+  .post(
+    '/logout',
+    validation,
+    controller.logout
+  )
+
+  .post(
+    '/create-admin',
+    controller.createAdmin
   )
 
 module.exports = router

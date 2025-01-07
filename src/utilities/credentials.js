@@ -1,11 +1,17 @@
 const bcrypt = require('bcrypt')
 
-async function comparePassword (reqPass, dbPass) {
-  const isPasswordMatch = await bcrypt.compare(reqPass, dbPass)
+async function verify ({ password, hash }) {
+  const isPasswordMatch = await bcrypt.compare(password, hash)
 
   return isPasswordMatch
 }
 
+async function hash (password, saltRounds = 10) {
+  const salt = bcrypt.genSaltSync(saltRounds)
+  return bcrypt.hashSync(password, salt)
+}
+
 module.exports = {
-  comparePassword
+  verify,
+  hash
 }
