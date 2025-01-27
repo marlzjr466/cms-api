@@ -180,6 +180,10 @@ module.exports = {
   },
 
   async createAdmin({ body }) {
+    if (body.role !== 'admin') {
+      throw new Error('Invalid role')
+    }
+    
     const trx = await metaQuery.trx()
 
     try {
@@ -204,11 +208,6 @@ module.exports = {
         },
         trx
       })
-
-      if (body.role !== 'admin') {
-        throw new Error('Invalid role')
-      }
-
       const hashPassword = await credentials.hash(body.password)
 
       await this.store({
@@ -225,6 +224,8 @@ module.exports = {
       return 'OK'
     } catch (error) {
       trx.rollback()
+
+      console.log('error:', error.message)
       throw error
     }
   }

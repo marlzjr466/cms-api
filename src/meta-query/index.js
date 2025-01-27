@@ -32,7 +32,11 @@ module.exports = class MetaQuery {
 
       if (body.filters) {
         for (const item of body.filters) {
-          query.where(item.field, item.operator || '=', item.value || 0)
+          if (item.value === 'null' && !item.operator) {
+            query.where(item.field, null)
+          } else {
+            query.where(item.field, item.operator || '=', item.value || 0)
+          }
         }
       }
 
