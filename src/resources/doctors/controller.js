@@ -5,7 +5,8 @@ const service = require('./service')
 module.exports = {
   list: async (req, res) => {
     try {
-      const response = await service.list({ body: req.query })
+      const decodedParams = JSON.parse(atob(req.query.data))
+      const response = await service.list({ body: decodedParams })
 
       res.status(200)
         .send(response)

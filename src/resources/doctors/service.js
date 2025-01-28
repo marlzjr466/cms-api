@@ -1,5 +1,13 @@
 const metaQuery = require('@/config')
 
+// utilities
+const credentials = require('@/utilities/credentials')
+const buffer = require('@/utilities/buffer')
+
+// services
+const authService = require('@/resources/authentications/service')
+const settingsService = require('@/resources/settings/service')
+
 module.exports = {
 	async list ({ body }) {
 		try {
@@ -13,6 +21,20 @@ module.exports = {
           list,
           tables: body.aggregate,
           is_first: body.is_first
+        })
+
+        list = list.map(item => {
+          let temp = {}
+          for (const x of body.aggregate) {
+            temp = {...temp, ...item[x.table]}
+          }
+
+          const updated = {...item, ...temp}
+          for (const x of body.aggregate) {
+            delete updated[x.table]
+          }
+
+          return updated
         })
       }
 
@@ -31,16 +53,40 @@ module.exports = {
 		}
 	},
 
-	async store ({ body, trx }) {
+	async store ({ body }) {
+    const trx = await metaQuery.trx()
+
 		try {
-			const response = await metaQuery.insert({
+			const [id] = await metaQuery.insert({
         table_name: 'doctors',
         body,
+        trx: trx
+      })
+
+      const defaultUsername = `${body.first_name.charAt(0).toLowerCase()}_${body.last_name.toLowerCase()}`
+      const defaultPassword = '0000'
+      const hashPassword = await credentials.hash(defaultPassword)
+      
+      await authService.store({
+        body: {
+          doctor_id: id,
+          password: hashPassword,
+          temp_password: buffer.toBase64(defaultPassword),
+          username: defaultUsername
+        },
         trx
       })
 
-			return response
+      await settingsService.store({
+        body: { doctor_id: id },
+        trx
+      })
+
+      trx.commit()
+      return 'OK'
 		} catch (error) {
+      trx.rollback()
+
 			throw error
 		}
 	},

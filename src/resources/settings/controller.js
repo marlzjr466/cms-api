@@ -5,6 +5,7 @@ const service = require('./service')
 module.exports = {
   list: async (req, res) => {
     try {
+      console.log('log', req.query.data)
       const decodedParams = JSON.parse(atob(req.query.data))
       const response = await service.list({ body: decodedParams })
 
@@ -20,14 +21,7 @@ module.exports = {
 
   store: async (req, res) => {
     try {
-      const schema = Joi.object({
-        first_name: Joi.string()
-          .required(),
-        last_name: Joi.string()
-          .required(),
-        phone_number: Joi.string()
-          .optional()
-      })
+      const schema = Joi.object({})
 
       const data = await schema.validateAsync(req.body)
       const response = await service.store({ body: data })
@@ -50,6 +44,8 @@ module.exports = {
         data: Joi.object()
           .required()
       })
+
+      console.log('---', req.body)
 
       const data = await schema.validateAsync(req.body)
       const response = await service.modify({ body: data })
