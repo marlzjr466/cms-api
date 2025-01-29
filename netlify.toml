@@ -1,11 +1,10 @@
 [build]
-  functions = "functions"
+  functions="functions/"
 
 [dev]
-  functions = "functions"
+  functions="functions/"
 
-# Redirect API calls only, not everything
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200
+  to="/.netlify/functions/api/:splat"
+  from="/*"
+  status=200
