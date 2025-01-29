@@ -1,8 +1,9 @@
 [build]
-  functions="functions/"
+  command="npm install"
+  functions="functions"
 
 [dev]
-  functions="functions/"
+  functions="functions"
 
 [[redirects]]
   from = "/*"
