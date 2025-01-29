@@ -7,3 +7,5 @@ node_modules
 package-lock.json
 !logs/.gitkeep
 storage/logs
+# Local Netlify folder
+.netlify
