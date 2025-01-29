@@ -7,5 +7,5 @@
 # Redirect API calls only, not everything
 [[redirects]]
   from = "/api/*"
-  to = "/functions/api/:splat"
+  to = "/.netlify/functions/api/:splat"
   status = 200
