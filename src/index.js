@@ -1,8 +1,8 @@
-require('module-alias/register')
+// require('module-alias/register')
 
-const bootstrap = require('@/bootstrap')
-const socket = require('@/config/socket')
-const { APP } = require('@/constants')
+const bootstrap = require('./bootstrap')
+const socket = require('./config/socket')
+const { APP } = require('./constants')
 
 const apps = [
   { name: 'Server', config: bootstrap, port: APP.PORT },

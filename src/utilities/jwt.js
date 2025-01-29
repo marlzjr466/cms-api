@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const { TOKEN } = require('@/constants')
+const { TOKEN } = require('../constants')
 
 module.exports = {
     generateAccessToken: function(user) {

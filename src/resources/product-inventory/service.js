@@ -1,4 +1,4 @@
-const metaQuery = require('@/config')
+const metaQuery = require('../../config')
 
 module.exports = {
 	async list ({ body }) {

@@ -1,13 +1,13 @@
-const metaQuery = require('@/config')
+const metaQuery = require('../../config')
 
 // utilities
-const credentials = require('@/utilities/credentials')
-const jwt = require('@/utilities/jwt')
-const buffer = require('@/utilities/buffer')
+const credentials = require('../../utilities/credentials')
+const jwt = require('../../utilities/jwt')
+const buffer = require('../../utilities/buffer')
 
 // services
-const adminService = require('@/resources/admins/service')
-const settingsService = require('@/resources/settings/service')
+const adminService = require('../admins/service')
+const settingsService = require('../settings/service')
 
 module.exports = {
 	async list (body) {

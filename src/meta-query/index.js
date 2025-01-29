@@ -3,7 +3,7 @@
 	* with the database using knex package
 */
 
-const { ENVIRONMENT } = require('@/constants')
+const { ENVIRONMENT } = require('../constants')
 
 module.exports = class MetaQuery {
   constructor (knex, { client, connection }) {

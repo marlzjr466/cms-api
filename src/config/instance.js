@@ -1,4 +1,4 @@
-const { DB } = require('@/constants')
+const { DB } = require('../constants')
 
 const instance = {
 	DEVELOPMENT: {

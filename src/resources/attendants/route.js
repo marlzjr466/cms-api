@@ -5,7 +5,7 @@ const router = express.Router()
 const controller = require('./controller')
 
 // middleware
-const validation = require('@/middlewares/validation')
+const validation = require('../../middlewares/validation')
 
 router
   .use(validation)
