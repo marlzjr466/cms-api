@@ -4,6 +4,9 @@ const cors = require('cors')
 const morgan = require('morgan')
 const { glob } = require('glob')
 
+// routes
+const routes = require('../routes')
+
 class Bootstrap {
   constructor () {
     this.app = express()
@@ -26,23 +29,26 @@ class Bootstrap {
       // log all requests
       .use(morgan('dev'))
 
+      // manually added all the routes
+      routes.forEach(route => {
+        this.app
+          .use(`/${route.prefix}`, route.path)
+      })
+
     /*
       * Tracks the requested routes,
       * import all route files in every module in resources
       * then init all routes
     */
-    const routes = await glob('**/resources/**/route.js', { absolute: true })
-    routes.forEach(path => {
-      // init route path
-      const router = require(path)
+    // const routes = await glob('**/resources/**/route.js', { absolute: true })
+    // routes.forEach(path => {
+    //   const router = require(path)
 
-      // extract the module name to be use as prefix
-      const [prefix] = path.split('\\').slice(-2)
+    //   const [prefix] = path.split('\\').slice(-2)
 
-      // init prefix and router
-      this.app
-        .use(`/${prefix}`, router)
-    })
+    //   this.app
+    //     .use(`/${prefix}`, router)
+    // })
   
     // Listening to port
     // this.app

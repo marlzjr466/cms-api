@@ -5,15 +5,13 @@ const service = require('./service')
 module.exports = {
   list: async (req, res) => {
     try {
-      // const schema = Joi.object({})
+      const schema = Joi.object({})
 
-      // const data = await schema.validateAsync(req.body)
-      // const response = await service.list({ body: data })
+      const data = await schema.validateAsync(req.body)
+      const response = await service.list({ body: data })
 
       res.status(200)
-        .send({
-          status: 'API is working...'
-        })
+        .send(response)
     } catch (error) {
       console.log('list: ', error)
       
