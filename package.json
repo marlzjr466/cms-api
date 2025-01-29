@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
-    "create:module": "plop --plopfile ./src/generator/module/plopfile.js"
+    "create:module": "plop --plopfile ./src/generator/module/plopfile.js",
+    "build": "netlify deploy --prod"
   },
   "author": "",
   "license": "ISC",
