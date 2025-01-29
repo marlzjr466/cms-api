@@ -3,8 +3,3 @@
 
 [dev]
   functions="functions/"
-
-[[redirects]]
-  to="/.netlify/functions/api/:splat"
-  from="/api/*"
-  status=200
