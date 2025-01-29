@@ -1,4 +1,5 @@
 [build]
+  command="npm install pg"
   functions="functions/"
 
 [dev]
