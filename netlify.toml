@@ -1,9 +1,11 @@
 [build]
-  command="npm install pg"
   functions="functions/"
 
 [dev]
   functions="functions/"
+
+[functions]
+  external_node_modules = ['pg']
 
 [[redirects]]
   from = "/*"
