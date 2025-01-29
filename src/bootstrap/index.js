@@ -41,7 +41,7 @@ class Bootstrap {
 
       // init prefix and router
       this.app
-        .use(`/api/${prefix}`, router)
+        .use(`/${prefix}`, router)
     })
   
     // Listening to port
