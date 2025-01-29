@@ -45,8 +45,8 @@ class Bootstrap {
     })
   
     // Listening to port
-    // this.app
-    //   .listen(port, callback())
+    this.app
+      .listen(port, callback())
   }
 }
 
