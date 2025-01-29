@@ -5,7 +5,11 @@ const morgan = require('morgan')
 const { glob } = require('glob')
 
 // routes
-const routes = require('../routes')
+const admins = require('../resources/admins/route')
+const authentications = require('../resources/authentications/route')
+const doctors = require('../resources/doctors/route')
+const attendants = require('../resources/attendants/route')
+const healthCheck = require('../resources/health-check/route')
 
 class Bootstrap {
   constructor () {
@@ -30,10 +34,16 @@ class Bootstrap {
       .use(morgan('dev'))
 
       // manually added all the routes
-      routes.forEach(route => {
-        this.app
-          .use(`/${route.prefix}`, route.path)
-      })
+      .use('/admins', admins)
+      .use('/authentications', authentications)
+      .use('/doctors', doctors)
+      .use('/attendants', attendants)
+      .use('/health-check', healthCheck)
+
+      // routes.forEach(route => {
+      //   this.app
+      //     .use(`/${route.prefix}`, route.path)
+      // })
 
     /*
       * Tracks the requested routes,
