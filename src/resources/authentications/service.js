@@ -7,6 +7,7 @@ const buffer = require('@/utilities/buffer')
 
 // services
 const adminService = require('@/resources/admins/service')
+const settingsService = require('@/resources/settings/service')
 
 module.exports = {
 	async list (body) {
@@ -113,7 +114,7 @@ module.exports = {
                 key: `${body.role}_id`
               }
             ],
-            columns: ['id', 'first_name', 'last_name', 'created_at'], 
+            columns: ['id', 'first_name', 'last_name', 'clinic_name', 'clinic_address', 'created_at'], 
           }
         ]
       })
@@ -136,6 +137,8 @@ module.exports = {
         admin_id: auth.admin_id,
         first_name: auth.admins.first_name,
         last_name: auth.admins.last_name,
+        clinic_name: auth.admins.clinic_name,
+        clinic_address: auth.admins.clinic_address,
         role: body.role,
         created_at: auth.admins.created_at
       })
@@ -208,6 +211,7 @@ module.exports = {
         },
         trx
       })
+
       const hashPassword = await credentials.hash(body.password)
 
       await this.store({
@@ -219,13 +223,18 @@ module.exports = {
         },
         trx
       })
+      
+      await settingsService.store({
+        body: { admin_id: id },
+        trx
+      })
 
       trx.commit()
       return 'OK'
     } catch (error) {
       trx.rollback()
 
-      console.log('error:', error.message)
+      console.log('error:', error)
       throw error
     }
   }

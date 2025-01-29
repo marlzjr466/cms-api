@@ -3,12 +3,26 @@
 	* with the database using knex package
 */
 
+const { ENVIRONMENT } = require('@/constants')
+
 module.exports = class MetaQuery {
   constructor (knex, { client, connection }) {
     this.knex = knex({
 			client,
 			connection
     })
+
+    this.testConnection()
+  }
+
+  async testConnection () {
+    try {
+      // Try selecting the first row from the `pg_catalog.pg_tables` system table
+      await this.knex.raw('SELECT 1+1 AS result');
+      console.log('Database connected to supabase successfully!');
+    } catch (error) {
+      console.error('Database connection failed:', error);
+    }
   }
 
   async trx () {
@@ -32,10 +46,16 @@ module.exports = class MetaQuery {
 
       if (body.filters) {
         for (const item of body.filters) {
-          if (item.value === 'null' && !item.operator) {
-            query.where(item.field, null)
+          if (item.operator === 'like') {
+            query.whereILike(item.field, `%${item.value}%`)
+          } else if (item.operator === 'orlike') {
+            query.orWhereILike(item.field, `%${item.value || ''}%`)
           } else {
-            query.where(item.field, item.operator || '=', item.value || 0)
+            if (item.value === 'null' && !item.operator) {
+              query.where(item.field, null)
+            } else {
+              query.where(item.field, item.operator || '=', item.value || 0)
+            }
           }
         }
       }
@@ -99,6 +119,11 @@ module.exports = class MetaQuery {
 					.ignore()
 			}
 
+      if (ENVIRONMENT === 'prod') {
+        const [result] = await query.returning('id')
+        return [result.id]
+      }
+      
 			return await query
 		} catch (error) {
 			throw error

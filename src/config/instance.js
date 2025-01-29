@@ -2,17 +2,21 @@ const { DB } = require('@/constants')
 
 const instance = {
 	DEVELOPMENT: {
-		host: DB.HOST,
-		user: DB.USER,
-		password: DB.PASSWORD,
-		database: DB.NAME
+		client: 'mysql2',
+		connection: {
+			host: DB.HOST,
+			user: DB.USER,
+			password: DB.PASSWORD,
+			database: DB.NAME
+		}
 	},
 
 	PRODUCTION: {
-		host: DB.HOST,
-		user: DB.USER,
-		password: DB.PASSWORD,
-		database: DB.NAME
+		client: 'pg',
+		connection: {
+			connectionString: DB.URL, // Load from environment variables
+			ssl: { rejectUnauthorized: false } // Required for Supabase
+		}
 	}
 }
 

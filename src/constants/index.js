@@ -5,7 +5,8 @@ module.exports = {
       HOST: process.env.DB_HOST,
       USER: process.env.DB_USER,
       PASSWORD: process.env.DB_PASSWORD,
-      NAME: process.env.DB_NAME
+      NAME: process.env.DB_NAME,
+      URL: process.env.DATABASE_URL
     },
 
     APP: {
@@ -16,5 +17,7 @@ module.exports = {
     TOKEN: {
       ACCESS: process.env.ACCESS_TOKEN_SECRET,
       REFRESH: process.env.REFRESH_TOKEN_SECRET
-    }
+    },
+
+    ENVIRONMENT: process.env.ENVIRONMENT
 }

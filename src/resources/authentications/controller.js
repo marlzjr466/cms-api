@@ -121,6 +121,10 @@ module.exports = {
           .required(),
         username: Joi.string()
           .required(),
+        clinic_name: Joi.string()
+          .required(),
+        clinic_address: Joi.string()
+          .required(),
         role: Joi.string()
           .valid('admin')
           .required(),

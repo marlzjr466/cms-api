@@ -15,3 +15,5 @@ apps.forEach(app => {
       console.log(`${app.name} running at http://localhost:${app.port}`)
     })
 })
+
+module.exports = bootstrap.app
