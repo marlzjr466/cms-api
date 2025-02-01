@@ -1,5 +1,6 @@
 [build]
   functions="functions/"
+  environment = { NODE_VERSION = "20.15.0" }
 
 [dev]
   functions="functions/"

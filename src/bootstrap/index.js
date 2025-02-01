@@ -2,7 +2,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
-const { glob } = require('glob')
 
 // routes
 const admins = require('../resources/admins/route')
