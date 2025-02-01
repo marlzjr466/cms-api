@@ -9,6 +9,7 @@ const authentications = require('../resources/authentications/route')
 const doctors = require('../resources/doctors/route')
 const attendants = require('../resources/attendants/route')
 const healthCheck = require('../resources/health-check/route')
+const settings = require('../resources/settings/route')
 
 class Bootstrap {
   constructor () {
@@ -38,6 +39,7 @@ class Bootstrap {
       .use('/doctors', doctors)
       .use('/attendants', attendants)
       .use('/health-check', healthCheck)
+      .use('/settings', settings)
 
       // routes.forEach(route => {
       //   this.app
