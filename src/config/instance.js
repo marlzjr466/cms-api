@@ -1,7 +1,7 @@
 const { DB } = require('../constants')
 
 const instance = {
-	DEVELOPMENT: {
+	dev: {
 		client: 'mysql2',
 		connection: {
 			host: DB.HOST,
@@ -11,7 +11,7 @@ const instance = {
 		}
 	},
 
-	PRODUCTION: {
+	prod: {
 		client: 'pg',
 		connection: {
 			connectionString: DB.URL, // Load from environment variables
