@@ -1,6 +1,7 @@
 [build]
   functions="functions/"
   environment = { NODE_VERSION = "20.15.0" }
+  command = "npm install --force && npm run build"
 
 [dev]
   functions="functions/"
