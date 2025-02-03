@@ -17,11 +17,15 @@ module.exports = class MetaQuery {
 
   async testConnection () {
     try {
-      // Try selecting the first row from the `pg_catalog.pg_tables` system table
-      await this.knex.raw('SELECT 1+1 AS result');
-      console.log('Database connected to supabase successfully!');
+      await this.knex.raw('SELECT 1+1 AS result')
+
+      if (process.env.ENVIRONMENT === 'prod') {
+        console.log('Database connected to supabase successfully!')
+      } else {
+        console.log('Database connected to mySQLYog successfully!')
+      }
     } catch (error) {
-      console.error('Database connection failed:', error);
+      console.error('Database connection failed:', error)
     }
   }
 

@@ -23,11 +23,7 @@ module.exports = {
       const schema = Joi.object({
         admin_id: Joi.number()
           .required(),
-        category_id: Joi.number()
-          .required(),
         name: Joi.string()
-          .required(),
-        description: Joi.string()
           .required()
       })
 

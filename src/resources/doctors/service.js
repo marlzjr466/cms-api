@@ -22,20 +22,6 @@ module.exports = {
           tables: body.aggregate,
           is_first: body.is_first
         })
-
-        list = list.map(item => {
-          let temp = {}
-          for (const x of body.aggregate) {
-            temp = {...temp, ...item[x.table]}
-          }
-
-          const updated = {...item, ...temp}
-          for (const x of body.aggregate) {
-            delete updated[x.table]
-          }
-
-          return updated
-        })
       }
 
 			if (body.is_count) {
@@ -53,14 +39,12 @@ module.exports = {
 		}
 	},
 
-	async store ({ body }) {
-    const trx = await metaQuery.trx()
-
+	async store ({ body, trx }) {
 		try {
 			const [id] = await metaQuery.insert({
         table_name: 'doctors',
         body,
-        trx: trx
+        trx
       })
 
       const defaultUsername = `${body.first_name.charAt(0).toLowerCase()}_${body.last_name.toLowerCase()}`
@@ -82,11 +66,8 @@ module.exports = {
         trx
       })
 
-      trx.commit()
       return 'OK'
 		} catch (error) {
-      trx.rollback()
-
 			throw error
 		}
 	},

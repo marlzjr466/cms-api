@@ -9,3 +9,4 @@ package-lock.json
 storage/logs
 # Local Netlify folder
 .netlify
+.env
