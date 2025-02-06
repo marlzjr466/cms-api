@@ -1,13 +1,10 @@
 const metaQuery = require('../../config')
 
-// service
-const productVariants = require('../product-variants/service')
-
 module.exports = {
 	async list ({ body }) {
 		try {
 			let list = await metaQuery.list({
-        table_name: 'products',
+        table_name: 'product_variants',
         body
       })
 
@@ -21,7 +18,7 @@ module.exports = {
 
 			if (body.is_count) {
         const { count } = await metaQuery.count({
-          table_name: 'products',
+          table_name: 'product_variants',
           body
         })
 
@@ -36,17 +33,13 @@ module.exports = {
 
 	async store ({ body, trx }) {
 		try {
-			const [id] = await metaQuery.insert({
-        table_name: 'products',
+			const response = await metaQuery.insert({
+        table_name: 'product_variants',
         body,
         trx
       })
 
-      await productVariants.store({
-        body: { product_id: id }
-      })
-
-			return 'OK'
+			return response
 		} catch (error) {
 			throw error
 		}
@@ -55,15 +48,11 @@ module.exports = {
   async modify ({ body, trx }) {
     try {
       const options = [
-        'id',
-        'name',
-        'description',
-        'deleted_at',
-        'category_id'
+        'id'
       ]
 
 			const response = await metaQuery.update({
-        table_name: 'products',
+        table_name: 'product_variants',
         body,
         options,
         trx
@@ -78,7 +67,7 @@ module.exports = {
   async delete ({ body, trx }) {
     try {
       const response = await metaQuery.delete({
-        table_name: 'products',
+        table_name: 'product_variants',
         body,
         trx
       })

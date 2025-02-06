@@ -202,8 +202,7 @@ module.exports = class MetaQuery {
 
   async aggregateTable ({
     list,
-    tables,
-    is_first: isFirst = false
+    tables
   }) {
     try {
       const dataList = list.length
@@ -221,7 +220,7 @@ module.exports = class MetaQuery {
           })
 
           const joinBody = {
-            is_first: true,
+            is_first: joinTable.is_first || false,
             filters: filters
           }
   
@@ -234,7 +233,8 @@ module.exports = class MetaQuery {
 						body: joinBody,
             aggregate: true
 					})
-          item[joinTable.table] = joinData
+
+          item[joinTable.table] = joinData || null
         }
       }
 

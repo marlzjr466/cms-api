@@ -12,6 +12,7 @@ const healthCheck = require('../resources/health-check/route')
 const settings = require('../resources/settings/route')
 const productCategories = require('../resources/product-categories/route')
 const products = require('../resources/products/route')
+const productVariants = require('../resources/product-variants/route')
 
 class Bootstrap {
   constructor () {
@@ -44,6 +45,7 @@ class Bootstrap {
       .use('/settings', settings)
       .use('/categories', productCategories)
       .use('/products', products)
+      .use('/product-variants', productVariants)
 
       // routes.forEach(route => {
       //   this.app
