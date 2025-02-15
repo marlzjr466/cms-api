@@ -21,9 +21,17 @@ module.exports = {
   store: async (req, res) => {
     try {
       const schema = Joi.object({
+        name: Joi.string()
+          .required(),
         product_id: Joi.number()
           .required(),
-        name: Joi.string()
+        variant_id: Joi.number()
+          .optional(),
+        price: Joi.number()
+          .required(),
+        stock: Joi.number()
+          .required(),
+        expired_at: Joi.date()
           .required()
       })
 

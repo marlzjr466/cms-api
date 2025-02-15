@@ -107,6 +107,7 @@ module.exports = {
         columns: ['id', 'username', 'password', 'admin_id'], 
         aggregate: [
           {
+            is_first: true,
             table: `${body.role}s`,
             filters: [
               {

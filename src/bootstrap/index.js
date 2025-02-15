@@ -13,6 +13,7 @@ const settings = require('../resources/settings/route')
 const productCategories = require('../resources/product-categories/route')
 const products = require('../resources/products/route')
 const productVariants = require('../resources/product-variants/route')
+const productItems = require('../resources/product-items/route')
 
 class Bootstrap {
   constructor () {
@@ -46,6 +47,7 @@ class Bootstrap {
       .use('/categories', productCategories)
       .use('/products', products)
       .use('/product-variants', productVariants)
+      .use('/product-items', productItems)
 
       // routes.forEach(route => {
       //   this.app

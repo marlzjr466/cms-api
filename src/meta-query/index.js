@@ -93,9 +93,19 @@ module.exports = class MetaQuery {
     try {
       const query = this.knex(tableName)
 
-      if (body.filter) {
-        for (const item of body.filter) {
-          query.where(item.field, item.operator || '=', item.value || 0)
+      if (body.filters) {
+        for (const item of body.filters) {
+          if (item.operator === 'like') {
+            query.whereILike(item.field, `%${item.value}%`)
+          } else if (item.operator === 'orlike') {
+            query.orWhereILike(item.field, `%${item.value || ''}%`)
+          } else {
+            if (item.value === 'null' && !item.operator) {
+              query.where(item.field, null)
+            } else {
+              query.where(item.field, item.operator || '=', item.value || 0)
+            }
+          }
         }
       }
 
