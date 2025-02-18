@@ -8,6 +8,7 @@ const buffer = require('../../utilities/buffer')
 // services
 const adminService = require('../admins/service')
 const settingsService = require('../settings/service')
+const clinicService = require('../clinic/service')
 
 module.exports = {
 	async list (body) {
@@ -96,6 +97,10 @@ module.exports = {
     const trx = await metaQuery.trx()
 
     try {
+      const cols = ['id', 'first_name', 'last_name', 'created_at']
+      if (body.role === 'doctor') {
+        cols.push('admin_id')
+      }
       const auth = await this.list({
         is_first: true,
         filters: [
@@ -104,7 +109,7 @@ module.exports = {
             value: body.username
           }
         ],
-        columns: ['id', 'username', 'password', 'admin_id'], 
+        columns: ['id', 'username', 'password', 'admin_id', 'doctor_id'], 
         aggregate: [
           {
             is_first: true,
@@ -115,7 +120,7 @@ module.exports = {
                 key: `${body.role}_id`
               }
             ],
-            columns: ['id', 'first_name', 'last_name', 'clinic_name', 'clinic_address', 'created_at'], 
+            columns: cols, 
           }
         ]
       })
@@ -133,16 +138,34 @@ module.exports = {
         throw new Error('Invalid password')
       }
 
-      const accessToken = jwt.generateAccessToken({
-        id: auth.id,
-        admin_id: auth.admin_id,
-        first_name: auth.admins.first_name,
-        last_name: auth.admins.last_name,
-        clinic_name: auth.admins.clinic_name,
-        clinic_address: auth.admins.clinic_address,
-        role: body.role,
-        created_at: auth.admins.created_at
+      const adminId = body.role === 'doctor' ? auth[`${body.role}s`].admin_id : auth.admin_id
+      const clinic = await clinicService.list({
+        is_first: true,
+        filters: [
+          {
+            field: 'admin_id',
+            value: adminId
+          }
+        ],
+        columns: ['name', 'address']
       })
+
+      const tokenize = {
+        id: auth.id,
+        admin_id: adminId,
+        first_name: auth[`${body.role}s`].first_name,
+        last_name: auth[`${body.role}s`].last_name,
+        clinic_name: clinic.name,
+        clinic_address: clinic.address,
+        role: body.role,
+        created_at: auth[`${body.role}s`].created_at
+      }
+
+      if (body.role === 'doctor') {
+        tokenize.doctor_id = auth[`${body.role}s`].id
+      }
+
+      const accessToken = jwt.generateAccessToken(tokenize)
 
       await this.modify({
         body: {

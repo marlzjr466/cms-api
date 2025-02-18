@@ -5,8 +5,10 @@ const service = require('./service')
 module.exports = {
   list: async (req, res) => {
     try {
-      const decodedParams = JSON.parse(atob(req.query.data))
-      const response = await service.list({ body: decodedParams })
+      const schema = Joi.object({})
+
+      const data = await schema.validateAsync(req.body)
+      const response = await service.list({ body: data })
 
       res.status(200)
         .send(response)
@@ -37,14 +39,7 @@ module.exports = {
 
   patch: async (req, res) => {
     try {
-      const schema = Joi.object({
-        key: Joi.string()
-          .required(),
-        data: Joi.object()
-          .required()
-      })
-
-      console.log('---', req.body)
+      const schema = Joi.object({})
 
       const data = await schema.validateAsync(req.body)
       const response = await service.modify({ body: data })
