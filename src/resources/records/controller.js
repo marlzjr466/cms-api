@@ -21,13 +21,29 @@ module.exports = {
   store: async (req, res) => {
     try {
       const schema = Joi.object({
-        number: Joi.string()
+        doctor_id: Joi.number()
           .required(),
         patient_id: Joi.number()
           .required(),
-        doctor_id: Joi.number()
+        queue_id: Joi.number()
+          .required(),
+        complaints: Joi.string()
+          .allow('')
           .optional(),
-        attendant_id: Joi.number()
+        medication: Joi.string()
+          .allow('')
+          .optional(),
+        diagnosis: Joi.string()
+          .allow('')
+          .optional(),
+        hpi: Joi.string()
+          .allow('')
+          .optional(),
+        physical_exam: Joi.string()
+          .allow('')
+          .optional(),
+        remarks: Joi.string()
+          .allow('')
           .optional()
       })
 

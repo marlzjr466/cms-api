@@ -14,6 +14,9 @@ const productCategories = require('../resources/product-categories/route')
 const products = require('../resources/products/route')
 const productVariants = require('../resources/product-variants/route')
 const productItems = require('../resources/product-items/route')
+const patients = require('../resources/patients/route')
+const records = require('../resources/records/route')
+const queues = require('../resources/queues/route')
 
 class Bootstrap {
   constructor () {
@@ -48,6 +51,9 @@ class Bootstrap {
       .use('/products', products)
       .use('/product-variants', productVariants)
       .use('/product-items', productItems)
+      .use('/patients', patients)
+      .use('/records', records)
+      .use('/queues', queues)
 
       // routes.forEach(route => {
       //   this.app

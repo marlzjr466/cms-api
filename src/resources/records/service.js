@@ -4,7 +4,7 @@ module.exports = {
 	async list ({ body }) {
 		try {
 			let list = await metaQuery.list({
-        table_name: 'queues',
+        table_name: 'records',
         body
       })
 
@@ -18,7 +18,7 @@ module.exports = {
 
 			if (body.is_count) {
         const { count } = await metaQuery.count({
-          table_name: 'queues',
+          table_name: 'records',
           body
         })
 
@@ -34,7 +34,7 @@ module.exports = {
 	async store ({ body, trx }) {
 		try {
 			const response = await metaQuery.insert({
-        table_name: 'queues',
+        table_name: 'records',
         body,
         trx
       })
@@ -49,13 +49,17 @@ module.exports = {
     try {
       const options = [
         'id',
-        'doctor_id',
-        'status',
+        'complaints',
+        'medication',
+        'diagnosis',
+        'hpi',
+        'physical_exam',
+        'remarks',
         'deleted_at'
       ]
 
 			const response = await metaQuery.update({
-        table_name: 'queues',
+        table_name: 'records',
         body,
         options,
         trx
@@ -70,7 +74,7 @@ module.exports = {
   async delete ({ body, trx }) {
     try {
       const response = await metaQuery.delete({
-        table_name: 'queues',
+        table_name: 'records',
         body,
         trx
       })
