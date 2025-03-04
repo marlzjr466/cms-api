@@ -12,10 +12,10 @@ module.exports = class MetaQuery {
 			connection
     })
 
-    this.testConnection()
+    this.checkConnection()
   }
 
-  async testConnection () {
+  async checkConnection () {
     try {
       await this.knex.raw('SELECT 1+1 AS result')
 
@@ -231,7 +231,8 @@ module.exports = class MetaQuery {
 
           const joinBody = {
             is_first: joinTable.is_first || false,
-            filters: filters
+            filters: filters,
+            sort: joinTable.sort || null
           }
   
           if (joinTable.columns) {
