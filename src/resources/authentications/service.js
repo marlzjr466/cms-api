@@ -63,7 +63,10 @@ module.exports = {
         'status',
         'admin_id',
         'doctor_id',
-        'attendant_id'
+        'attendant_id',
+        'password',
+        'temp_password',
+        'username'
       ]
 
 			const response = await metaQuery.update({
@@ -97,7 +100,7 @@ module.exports = {
     const trx = await metaQuery.trx()
 
     try {
-      const cols = ['id', 'first_name', 'last_name', 'created_at']
+      const cols = ['id', 'first_name', 'last_name', 'phone_number', 'created_at']
       if (body.role === 'doctor') {
         cols.push('admin_id')
       }
@@ -152,9 +155,11 @@ module.exports = {
 
       const tokenize = {
         id: auth.id,
+        username: auth.username,
         admin_id: adminId,
         first_name: auth[`${body.role}s`].first_name,
         last_name: auth[`${body.role}s`].last_name,
+        phone_number: auth[`${body.role}s`].phone_number,
         clinic_name: clinic.name,
         clinic_address: clinic.address,
         role: body.role,
@@ -259,6 +264,37 @@ module.exports = {
       trx.rollback()
 
       console.log('error:', error)
+      throw error
+    }
+  },
+
+  async changePassword ({ body }) {
+    try {
+      let data = {
+        id: body.id,
+        username: body.username,
+      }
+
+      if (body.password) {
+        const hashPassword = await credentials.hash(body.password)
+
+        data = {
+          ...data,
+          password: hashPassword,
+          temp_password: buffer.toBase64(body.password)
+        }
+      }
+
+      await this.modify({
+        body: {
+          key: 'id',
+          data
+        }
+      })
+
+      return 'OK'
+    } catch (error) {
+      console.log('error------:', error)
       throw error
     }
   }

@@ -21,6 +21,8 @@ module.exports = {
   store: async (req, res) => {
     try {
       const schema = Joi.object({
+        admin_id: Joi.number()
+          .required(),
         doctor_id: Joi.number()
           .required(),
         patient_id: Joi.number()

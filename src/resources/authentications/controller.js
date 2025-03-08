@@ -39,7 +39,12 @@ module.exports = {
 
   patch: async (req, res) => {
     try {
-      const schema = Joi.object({})
+      const schema = Joi.object({
+        key: Joi.string()
+          .required(),
+        data: Joi.object()
+          .required()
+      })
 
       const data = await schema.validateAsync(req.body)
       const response = await service.modify({ body: data })
@@ -141,5 +146,30 @@ module.exports = {
       res.status(400)
         .send(error.message)
     }
-  }
+  },
+
+  changePassword: async (req, res) => {
+    try {
+      const schema = Joi.object({
+        id: Joi.number()
+          .required(),
+        username: Joi.string()
+          .optional(),
+        password: Joi.string()
+          .optional()
+          .allow('')
+      })
+
+      const data = await schema.validateAsync(req.body)
+      const response = await service.changePassword({ body: data })
+
+      res.status(200)
+        .send(response)
+    } catch (error) {
+      console.log('patch: ', error)
+      
+      res.status(400)
+        .send(error.message)
+    }
+  },
 }

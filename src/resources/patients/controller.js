@@ -27,6 +27,8 @@ module.exports = {
           .required(),
         gender: Joi.string()
           .required(),
+        address: Joi.string()
+          .optional(),
         birth_date: Joi.date()
           .required()
       })

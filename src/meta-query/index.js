@@ -54,6 +54,8 @@ module.exports = class MetaQuery {
             query.whereILike(item.field, `%${item.value}%`)
           } else if (item.operator === 'orlike') {
             query.orWhereILike(item.field, `%${item.value || ''}%`)
+          } else if (item.custom_operator === 'dateequal') {
+            query.whereRaw(`DATE(${item.field}) = ?`, [item.value])
           } else {
             if (item.value === 'null' && !item.operator) {
               query.where(item.field, null)
@@ -99,6 +101,8 @@ module.exports = class MetaQuery {
             query.whereILike(item.field, `%${item.value}%`)
           } else if (item.operator === 'orlike') {
             query.orWhereILike(item.field, `%${item.value || ''}%`)
+          } else if (item.custom_operator === 'dateequal') {
+            query.whereRaw(`DATE(${item.field}) = ?`, [item.value])
           } else {
             if (item.value === 'null' && !item.operator) {
               query.where(item.field, null)

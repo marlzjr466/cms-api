@@ -48,4 +48,10 @@ router
     controller.createAdmin
   )
 
+  .patch(
+    '/change-password',
+    validation,
+    controller.changePassword
+  )
+
 module.exports = router
