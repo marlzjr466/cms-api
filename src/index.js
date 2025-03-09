@@ -6,7 +6,7 @@ const { APP } = require('./constants')
 
 const apps = [
   { name: 'Server', config: bootstrap, port: APP.PORT },
-  // { name: 'Socket', config: socket, port: APP.SOCKET_PORT }
+  { name: 'Socket', config: socket, port: APP.SOCKET_PORT }
 ]
 
 apps.forEach(app => {

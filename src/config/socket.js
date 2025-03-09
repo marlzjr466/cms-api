@@ -26,6 +26,7 @@ class Socket {
 
       this[ns].on('connection', socket => {
         // events here
+        console.log('user conencted to the socket.')
       })
     })
 

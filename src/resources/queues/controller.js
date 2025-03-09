@@ -1,5 +1,6 @@
 const Joi = require('joi')
 
+const socket = require('../../config/socket')
 const service = require('./service')
 
 module.exports = {
@@ -33,6 +34,8 @@ module.exports = {
 
       const data = await schema.validateAsync(req.body)
       const response = await service.store({ body: data })
+
+      socket.nsCms.emit('refresh', ['queues'])
 
       res.status(200)
         .send(response)

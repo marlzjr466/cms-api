@@ -294,7 +294,7 @@ module.exports = {
 
       return 'OK'
     } catch (error) {
-      console.log('error------:', error)
+      console.log('error:', error)
       throw error
     }
   }
