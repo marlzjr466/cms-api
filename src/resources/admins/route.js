@@ -30,4 +30,14 @@ router
     controller.delete
   )
 
+  .get(
+    '/dashboard-data',
+    controller.dashboardData
+  )
+
+  .get(
+    '/online-staff',
+    controller.onlineStaff
+  )
+
 module.exports = router

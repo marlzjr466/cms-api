@@ -79,5 +79,35 @@ module.exports = {
       res.status(400)
         .send(error.message)
     }
+  },
+
+  dashboardData: async (req, res) => {
+    try {
+      const id = req.user.admin_id
+      const response = await service.dashboardData(id)
+
+      res.status(200)
+        .send(response)
+    } catch (error) {
+      console.log('dashboardData: ', error)
+      
+      res.status(400)
+        .send(error.message)
+    }
+  },
+
+  onlineStaff: async (req, res) => {
+    try {
+      const id = req.user.admin_id
+      const response = await service.onlineStaff(id)
+
+      res.status(200)
+        .send(response)
+    } catch (error) {
+      console.log('onlineStaff: ', error)
+      
+      res.status(400)
+        .send(error.message)
+    }
   }
 }

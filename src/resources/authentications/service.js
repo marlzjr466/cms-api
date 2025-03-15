@@ -101,9 +101,10 @@ module.exports = {
 
     try {
       const cols = ['id', 'first_name', 'last_name', 'phone_number', 'created_at']
-      if (body.role === 'doctor') {
+      if (['doctor', 'attendant'].includes(body.role)) {
         cols.push('admin_id')
       }
+
       const auth = await this.list({
         is_first: true,
         filters: [
@@ -112,7 +113,7 @@ module.exports = {
             value: body.username
           }
         ],
-        columns: ['id', 'username', 'password', 'admin_id', 'doctor_id'], 
+        columns: ['id', 'username', 'password', 'admin_id', 'doctor_id', 'attendant_id'], 
         aggregate: [
           {
             is_first: true,
@@ -141,7 +142,8 @@ module.exports = {
         throw new Error('Invalid password')
       }
 
-      const adminId = body.role === 'doctor' ? auth[`${body.role}s`].admin_id : auth.admin_id
+      const adminId = ['doctor', 'attendant'].includes(body.role) ? auth[`${body.role}s`].admin_id : auth.admin_id
+      
       const clinic = await clinicService.list({
         is_first: true,
         filters: [
@@ -168,6 +170,10 @@ module.exports = {
 
       if (body.role === 'doctor') {
         tokenize.doctor_id = auth[`${body.role}s`].id
+      }
+
+      if (body.role === 'attendant') {
+        tokenize.attendant_id = auth[`${body.role}s`].id
       }
 
       const accessToken = jwt.generateAccessToken(tokenize)

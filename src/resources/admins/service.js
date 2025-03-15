@@ -80,5 +80,46 @@ module.exports = {
     } catch (error) {
       throw error
     }
+  },
+
+  async dashboardData (id) {
+    try {
+      const [result] = await metaQuery.raw(`
+        select 
+          (select count(*) from patients where admin_id = ${id}) as total_patients,
+          (select sum(stock) from product_items where expired_at > now()) as inventory,
+          (select count(*) from records where DATE(created_at) = curdate()) as todays_patients
+      `)
+
+      return {
+        patientsCount: result.total_patients,
+        inventoryCount: result.inventory,
+        todaysPatientsCount: result.todays_patients
+      }
+    } catch (error) {
+      throw error
+    }
+  },
+
+  async onlineStaff (id) {
+    try {
+      const result = await metaQuery.raw(`
+        select a.first_name, a.last_name, 'attendant' as role
+          from attendants a
+          join authentications auth on a.id = auth.attendant_id
+          where a.admin_id = ${id} and auth.status = 'online'
+
+        union
+
+        select d.first_name, d.last_name, 'doctor' AS role
+          from doctors d
+          join authentications auth on d.id = auth.doctor_id
+          where d.admin_id = ${id} and auth.status = 'online'
+      `)
+
+      return result
+    } catch (error) {
+      throw error
+    }
   }
 }
