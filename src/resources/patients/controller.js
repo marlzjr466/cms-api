@@ -1,5 +1,6 @@
 const Joi = require('joi')
 
+const socket = require('../../config/socket')
 const service = require('./service')
 
 module.exports = {
@@ -21,6 +22,8 @@ module.exports = {
   store: async (req, res) => {
     try {
       const schema = Joi.object({
+        admin_id: Joi.number()
+          .required(),
         first_name: Joi.string()
           .required(),
         last_name: Joi.string()
@@ -35,6 +38,8 @@ module.exports = {
 
       const data = await schema.validateAsync(req.body)
       const response = await service.store({ body: data })
+
+      socket.nsCms.emit('refresh', ['patients'])
 
       res.status(200)
         .send(response)
@@ -57,6 +62,8 @@ module.exports = {
 
       const data = await schema.validateAsync(req.body)
       const response = await service.modify({ body: data })
+
+      socket.nsCms.emit('refresh', ['patients'])
 
       res.status(200)
         .send(response)

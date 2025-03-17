@@ -48,7 +48,11 @@ module.exports = {
   async modify ({ body, trx }) {
     try {
       const options = [
-        'id'
+        'id',
+        'record_id',
+        'amount',
+        'status',
+        'attendant_id'
       ]
 
 			const response = await metaQuery.update({

@@ -8,7 +8,7 @@ const controller = require('./controller')
 const validation = require('../../middlewares/validation')
 
 router
-  .use(validation)
+  // .use(validation)
   
   .get(
     '/',

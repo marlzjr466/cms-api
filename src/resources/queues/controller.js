@@ -59,6 +59,8 @@ module.exports = {
       const data = await schema.validateAsync(req.body)
       const response = await service.modify({ body: data })
 
+      socket.nsCms.emit('refresh', ['queues'])
+
       res.status(200)
         .send(response)
     } catch (error) {

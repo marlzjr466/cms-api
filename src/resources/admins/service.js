@@ -88,13 +88,17 @@ module.exports = {
         select 
           (select count(*) from patients where admin_id = ${id}) as total_patients,
           (select sum(stock) from product_items where expired_at > now()) as inventory,
+          (select sum(amount) from transactions) as overall_sales,
+          (select sum(amount) from transactions where DATE(created_at) = curdate()) as todays_sales,
           (select count(*) from records where DATE(created_at) = curdate()) as todays_patients
       `)
 
       return {
         patientsCount: result.total_patients,
         inventoryCount: result.inventory,
-        todaysPatientsCount: result.todays_patients
+        todaysPatientsCount: result.todays_patients,
+        overallSales: result.overall_sales,
+        todaysTotalSales: result.todays_sales
       }
     } catch (error) {
       throw error

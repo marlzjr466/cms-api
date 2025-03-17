@@ -1,5 +1,6 @@
 const Joi = require('joi')
 
+const socket = require('../../config/socket')
 const service = require('./service')
 
 module.exports = {
@@ -91,6 +92,8 @@ module.exports = {
       const data = await schema.validateAsync(req.body)
       const response = await service.login({ body: data })
 
+      socket.nsCms.emit('refresh', ['users'])
+
       res.status(200)
         .send(response)
     } catch (error) {
@@ -108,6 +111,8 @@ module.exports = {
 
       const data = await schema.validateAsync(req.body)
       const response = await service.logout(data.user_id)
+
+      socket.nsCms.emit('refresh', ['users'])
 
       res.status(200)
         .send(response)

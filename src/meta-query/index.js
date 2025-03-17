@@ -219,40 +219,44 @@ module.exports = class MetaQuery {
     tables
   }) {
     try {
-      const dataList = list.length
-        ? list
-        : [list]
-
-      for (const item of dataList) {
-        for (const joinTable of tables) {
-          const filters = joinTable.filters.map(filter => {
-            return {
-              field: filter.field,
-              operator: filter.operator,
-              value: item[filter.key]
-            }
-          })
-
+      const dataList = Array.isArray(list) ? list : [list];
+  
+      const processJoins = async (item, joinTables) => {
+        for (const joinTable of joinTables) {
+          const filters = joinTable.filters.map(filter => ({
+            field: filter.field,
+            operator: filter.operator || '=',
+            value: item[filter.key]
+          }))
+  
           const joinBody = {
             is_first: joinTable.is_first || false,
             filters: filters,
-            sort: joinTable.sort || null
-          }
-  
-          if (joinTable.columns) {
-            joinBody.columns = joinTable.columns
+            sort: joinTable.sort || null,
+            columns: joinTable.columns || null
           }
   
           const joinData = await this.list({
             table_name: joinTable.table,
-						body: joinBody,
+            body: joinBody,
             aggregate: true
-					})
-
+          })
+  
           item[joinTable.table] = joinData || null
+  
+          if (joinData && joinTable.aggregate) {
+            const joinDataArray = Array.isArray(joinData) ? joinData : [joinData]
+            for (const joinItem of joinDataArray) {
+              await processJoins(joinItem, joinTable.aggregate)
+            }
+          }
         }
       }
-
+  
+      for (const item of dataList) {
+        await processJoins(item, tables)
+      }
+  
       return list
     } catch (error) {
       throw error
