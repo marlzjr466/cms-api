@@ -264,6 +264,15 @@ module.exports = {
         trx
       })
 
+      await clinicService.store({
+        body: {
+          admin_id: id,
+          name: body.clinic_name,
+          address: body.clinic_address
+        },
+        trx
+      })
+
       trx.commit()
       return 'OK'
     } catch (error) {

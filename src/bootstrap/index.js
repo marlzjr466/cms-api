@@ -18,6 +18,7 @@ const patients = require('../resources/patients/route')
 const records = require('../resources/records/route')
 const queues = require('../resources/queues/route')
 const transactions = require('../resources/transactions/route')
+const clinic = require('../resources/clinic/route')
 
 class Bootstrap {
   constructor () {
@@ -56,6 +57,7 @@ class Bootstrap {
       .use('/records', records)
       .use('/queues', queues)
       .use('/transactions', transactions)
+      .use('/clinic', clinic)
 
       // routes.forEach(route => {
       //   this.app

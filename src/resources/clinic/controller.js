@@ -5,10 +5,15 @@ const service = require('./service')
 module.exports = {
   list: async (req, res) => {
     try {
-      const schema = Joi.object({})
-
-      const data = await schema.validateAsync(req.body)
-      const response = await service.list({ body: data })
+      const response = await service.list({
+        is_first: true,
+        filter: [
+          {
+            field: 'admin_id',
+            value: req.user.admin_id
+          }
+        ]
+      })
 
       res.status(200)
         .send(response)
@@ -39,10 +44,23 @@ module.exports = {
 
   patch: async (req, res) => {
     try {
-      const schema = Joi.object({})
+      const schema = Joi.object({
+        name: Joi.string()
+          .optional(),
+        address: Joi.string()
+          .optional()
+      })
 
       const data = await schema.validateAsync(req.body)
-      const response = await service.modify({ body: data })
+      const response = await service.modify({
+        body: {
+          key: 'id',
+          data: {
+            id: req.user.admin_id,
+            ...data
+          }
+        }
+      })
 
       res.status(200)
         .send(response)
