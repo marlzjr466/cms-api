@@ -54,6 +54,7 @@ module.exports = {
         'address',
         'gender',
         'birth_date',
+        'phone_number',
         'deleted_at'
       ]
 

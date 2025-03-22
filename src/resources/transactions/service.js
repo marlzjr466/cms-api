@@ -51,6 +51,7 @@ module.exports = {
         'id',
         'record_id',
         'amount',
+        'consultation_price',
         'status',
         'attendant_id'
       ]

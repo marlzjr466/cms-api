@@ -28,6 +28,8 @@ module.exports = {
           .optional(),
         amount: Joi.number()
           .optional(),
+        consultation_price: Joi.number()
+          .optional(),
         status: Joi.number()
           .optional()
       })

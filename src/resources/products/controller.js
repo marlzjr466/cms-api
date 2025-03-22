@@ -20,7 +20,7 @@ module.exports = {
 
   store: async (req, res) => {
     try {
-      const schema = Joi.object({
+      const itemSchema = {
         admin_id: Joi.number()
           .required(),
         category_id: Joi.number()
@@ -28,8 +28,16 @@ module.exports = {
         name: Joi.string()
           .required(),
         description: Joi.string()
-          .required()
-      })
+          .allow(null)
+          .optional()
+      }
+      
+      const schema = Joi.alternatives().try(
+        Joi.object(itemSchema),
+        Joi.array().items(
+          Joi.object(itemSchema)
+        )
+      )
 
       const data = await schema.validateAsync(req.body)
       const response = await service.store({ body: data })

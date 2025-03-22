@@ -42,11 +42,11 @@ module.exports = {
         trx
       })
 
-      await productVariants.store({
+      const res = await productVariants.store({
         body: { product_id: id }
       })
 
-			return 'OK'
+			return res
 		} catch (error) {
 			throw error
 		}
