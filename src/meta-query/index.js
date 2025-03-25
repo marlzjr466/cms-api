@@ -45,7 +45,28 @@ module.exports = class MetaQuery {
       const query = this.knex(tableName)
 
       if (body.columns) {
-        query.select(body.columns)
+        const columns = body.columns.map(col =>
+          typeof col === 'string' ? col : this.knex.raw(col.raw)
+        )
+        query.select(columns)
+      }
+
+      if (body.join) {
+        for (const join of body.join) {
+          query.join(join.table, join.key, join.field)
+        }
+      }
+
+      if (body.leftJoin) {
+        for (const join of body.leftJoin) {
+          query.leftJoin(join.table, join.key, join.field)
+        }
+      }
+
+      if (body.rightJoin) {
+        for (const join of body.rightJoin) {
+          query.rightJoin(join.table, join.key, join.field)
+        }
       }
 
       if (body.filters) {
@@ -66,9 +87,17 @@ module.exports = class MetaQuery {
         }
       }
 
+      if (body.groupBy) {
+        query.groupBy(body.groupBy)
+      }
+
       if (body.sort) {
         for (const item of body.sort) {
-          query.orderBy(item.field, item.direction)
+          if (item.field.includes('.')) {
+            query.orderByRaw(`${item.field} ${item.direction}`) // Sorting by joined table fields
+          } else {
+            query.orderBy(item.field, item.direction)
+          }
         }
       }
 

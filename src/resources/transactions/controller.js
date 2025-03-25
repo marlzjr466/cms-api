@@ -31,6 +31,8 @@ module.exports = {
         consultation_price: Joi.number()
           .optional(),
         status: Joi.number()
+          .optional(),
+        products_metadata: Joi.string()
           .optional()
       })
 

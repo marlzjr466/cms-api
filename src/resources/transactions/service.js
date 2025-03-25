@@ -53,7 +53,8 @@ module.exports = {
         'amount',
         'consultation_price',
         'status',
-        'attendant_id'
+        'attendant_id',
+        'products_metadata'
       ]
 
 			const response = await metaQuery.update({
