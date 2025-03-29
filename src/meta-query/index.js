@@ -53,19 +53,43 @@ module.exports = class MetaQuery {
 
       if (body.join) {
         for (const join of body.join) {
-          query.join(join.table, join.key, join.field)
+          if (join.raw) {
+            query.join(
+              this.knex.raw(join.raw),
+              join.key,
+              join.field
+            )
+          } else {
+            query.join(join.table, join.key, join.field)
+          }
         }
       }
 
       if (body.leftJoin) {
         for (const join of body.leftJoin) {
-          query.leftJoin(join.table, join.key, join.field)
+          if (join.raw) {
+            query.leftJoin(
+              this.knex.raw(join.raw),
+              join.key,
+              join.field
+            )
+          } else {
+            query.leftJoin(join.table, join.key, join.field)
+          }
         }
       }
 
       if (body.rightJoin) {
         for (const join of body.rightJoin) {
-          query.rightJoin(join.table, join.key, join.field)
+          if (join.raw) {
+            query.rightJoin(
+              this.knex.raw(join.raw),
+              join.key,
+              join.field
+            )
+          } else {
+            query.rightJoin(join.table, join.key, join.field)
+          }
         }
       }
 

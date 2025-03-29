@@ -55,7 +55,8 @@ module.exports = {
         'gender',
         'birth_date',
         'phone_number',
-        'deleted_at'
+        'deleted_at',
+        'vaccine'
       ]
 
 			const response = await metaQuery.update({
